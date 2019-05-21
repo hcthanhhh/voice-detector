@@ -38,7 +38,7 @@ export default {
     init: function () {
       this.recognition.continuous = true
       this.recognition.interimResults = true
-      this.recognition.lang = vi-VN
+      this.recognition.lang = "vi-VN"
       this.reset()
       this.recognition.onend = this.reset()
       this.recognition.onresult = (event) => {
