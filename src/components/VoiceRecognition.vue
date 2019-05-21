@@ -24,6 +24,11 @@ export default {
   },
   mounted () {
     this.init()
+    window.addEventListener('keyup', function(e) {
+      if(e.keyCode === 13) {
+        this.toggleStartStop()
+      }
+    })
   },
   methods: {
     reset: function () {

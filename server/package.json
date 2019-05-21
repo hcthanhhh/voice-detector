@@ -1,0 +1,32 @@
+{
+    "name": "htmlvoice",
+    "version": "1.0.0",
+    "description": "A Vue.js project",
+    "author": "hcthanhhh <44112010+hcthanhhh@users.noreply.github.com>",
+    "private": true,
+    "scripts": {
+      "start": "node server.js"
+    },
+    "dependencies": {
+      "cors": "^2.8.5",
+      "express": "^4.17.0",
+      "morgan": "^1.9.1"
+    },
+    "engines": {
+      "node": ">= 6.0.0",
+      "npm": ">= 3.0.0"
+    },
+    "browserslist": [
+      "> 1%",
+      "last 2 versions",
+      "not ie <= 8"
+    ],
+    "permissions": {
+      "audio-capture": {
+        "description": "Audio capture"
+      },
+      "speech-recognition": {
+        "description": "Speech recognition"
+      }
+    }
+  }
