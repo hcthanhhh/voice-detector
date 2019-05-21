@@ -23,10 +23,11 @@ export default {
     }
   },
   mounted () {
-    this.init()
+    var self = this
+    this.init();
     window.addEventListener('keyup', function(e) {
       if(e.keyCode === 13) {
-        this.toggleStartStop()
+        self.toggleStartStop()
       }
     })
   },
