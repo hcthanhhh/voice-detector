@@ -48,6 +48,9 @@ export default {
       this.recognition.interimResults = true
       this.recognition.lang = 'vi-VN'
       this.reset()
+      this.recognition.onerror = function(event) {
+        console.error(event);
+      };
       this.recognition.onend = this.reset()
       this.recognition.onresult = (event) => {
         for (var i = event.resultIndex; i < event.results.length; ++i) {
