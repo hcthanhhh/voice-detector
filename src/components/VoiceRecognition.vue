@@ -37,20 +37,21 @@ export default {
     init: function () {
       this.recognition.continuous = true
       this.recognition.interimResults = true
-      // this.recognition.lang = "vi-VN"
+      this.recognition.lang = 'vi-VN'
       this.reset()
       this.recognition.onend = this.reset()
       this.recognition.onresult = (event) => {
         for (var i = event.resultIndex; i < event.results.length; ++i) {
           if (event.results[i].isFinal) {
             this.result = event.results[i][0].transcript
-            //textarea.value = this.result
+            textarea.value = this.result
             console.log("return result: ", this.result)
-          } else {
-            this.interimResult = event.results[i][0].transcript
-            textarea.value = this.interimResult
-            console.log("return interim result: ", this.interimResult)
           }
+          // } else {
+          //   this.interimResult = event.results[i][0].transcript
+          //   textarea.value = this.interimResult
+          //   console.log("return interim result: ", this.interimResult)
+          // }
         }
       }
     },
