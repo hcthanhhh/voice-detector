@@ -1,11 +1,11 @@
 //Colorchange.vue
 
 <template>
-  <div>
+  <div id="VoiceRecognition">
     <div>
       <textarea id="textarea" rows=10 cols=80 style="font-size: 2em"></textarea>
     </div>
-    <button id="button" v-on:click="toggleStartStop()">Click to speak</button>
+    <button id="button" v-on:click="toggleStartStop()" style="font-size: 2em">Click to speak</button>
   </div>
 </template>
 
@@ -16,9 +16,18 @@ export default {
     return {
       button: document.getElementById('#button'),
       textarea: document.querySelector('textarea'),
+      // colors: ['aqua', 'azure', 'beige', 'bisque', 'black', 'blue',
+      //   'brown', 'chocolate', 'coral', 'crimson', 'cyan', 'fuchsia',
+      //   'ghostwhite', 'gold', 'goldenrod', 'gray', 'green', 'indigo',
+      //   'ivory', 'khaki', 'lavender', 'lime', 'linen', 'magenta',
+      //   'maroon', 'moccasin', 'navy', 'olive', 'orange', 'orchid',
+      //   'peru', 'pink', 'plum', 'purple', 'red', 'salmon',
+      //   'sienna', 'silver', 'snow', 'tan', 'teal', 'thistle',
+      //   'tomato', 'turquoise', 'violet', 'white', 'yellow'],
       recognizing: null,
       recognition: new webkitSpeechRecognition(),
-      result: null,
+      bg: document.querySelector('html'),
+      result: '',
       interimResult: ''
     }
   },
@@ -43,15 +52,14 @@ export default {
       this.recognition.onresult = (event) => {
         for (var i = event.resultIndex; i < event.results.length; ++i) {
           if (event.results[i].isFinal) {
-            this.result = event.results[i][0].transcript
+            this.result += event.results[i][0].transcript
             textarea.value = this.result
             console.log("return result: ", this.result)
           }
-          // } else {
-          //   this.interimResult = event.results[i][0].transcript
-          //   textarea.value = this.interimResult
-          //   console.log("return interim result: ", this.interimResult)
-          // }
+          else {
+            this.interimResult = event.results[i][0].transcript
+            console.log("return interim result: ", this.interimResult)
+          }
         }
       }
     },
