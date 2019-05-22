@@ -3,7 +3,7 @@
 <template>
   <div>
     <div>
-      <textarea id="textarea" rows=10 cols=80></textarea>
+      <textarea id="textarea" rows=10 cols=80 style="font-size: 2em"></textarea>
     </div>
     <button id="button" v-on:click="toggleStartStop()">Click to speak</button>
   </div>
