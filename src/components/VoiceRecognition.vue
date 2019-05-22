@@ -23,11 +23,10 @@ export default {
     }
   },
   mounted () {
-    var self = this
     this.init();
-    window.addEventListener('keyup', function(e) {
+    window.addEventListener('keyup', (e) => {
       if(e.keyCode === 13) {
-        self.toggleStartStop()
+        this.toggleStartStop()
       }
     })
   },
@@ -38,7 +37,7 @@ export default {
     init: function () {
       this.recognition.continuous = true
       this.recognition.interimResults = true
-      this.recognition.lang = "vi-VN"
+      // this.recognition.lang = "vi-VN"
       this.reset()
       this.recognition.onend = this.reset()
       this.recognition.onresult = (event) => {
