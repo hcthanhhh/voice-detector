@@ -159,10 +159,10 @@ export default {
       }
     },
     onBtnRecordClicked: function () {
-      console.log('Recording...')
-      if (this.localstream == null) {
-        console.log('Could not get local stream from mic')
-      } else {
+      // console.log('Recording...')
+      // if (this.localstream == null) {
+      //   console.log('Could not get local stream from mic')
+      // } else {
         console.log('Start Recording...')
         if (typeof MediaRecorder.isTypeSupported === 'function') {
           var option
@@ -221,7 +221,7 @@ export default {
         //   console.log(track.kind, ':', JSON.stringify(track.getSettings()))
         //   console.log(track.getSettings())
         // })
-      }
+      // }
     },
     onBtnStopClicked: function () {
       this.mediaRecorder.stop()
