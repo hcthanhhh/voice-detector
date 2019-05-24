@@ -103,7 +103,6 @@ export default {
         this.check = false
         console.log(event)
       }
-      this.check = false
       this.recognition.onend = this.reset()
       this.recognition.onresult = (event) => {
         for (var i = event.resultIndex; i < event.results.length; ++i) {
