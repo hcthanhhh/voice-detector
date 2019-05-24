@@ -1,4 +1,4 @@
-//Colorchange.vue
+//VoiceRecognition.vue
 
 <template>
   <div id="VoiceRecognition">
@@ -60,7 +60,7 @@ export default {
     this.CheckAPIrecord()
     window.addEventListener('keyup', (e) => {
       if (e.keyCode === 13) {
-        this.toggleStartStop()
+        this.switcher()
       }
     })
   },
