@@ -5,63 +5,115 @@
     <div>
       <textarea id="textarea" rows=10 cols=80 style="font-size: 2em"></textarea>
     </div>
-    <button id="button" v-on:click="toggleStartStop()" style="font-size: 2em">Click to speak</button>
+    <div>
+      <button id="Speech" v-on:click="switcher()" style="font-size: 2em">Click to speak</button>
+    </div>
+    <!-- <div>
+      <button id="rec" v-on:click="onBtnRecordClicked()">Record</button>
+      <button id="pauseRes" v-on:click="onPauseResumeClicked()" disabled>Pause</button>
+      <button id="stop" v-on:click="onBtnStopClicked()" disabled>Stop</button>
+    </div> -->
+    <a id="downloadLink"></a>
   </div>
 </template>
 
 <script type="text/javascript">
+// import wavpackage from '../services/convertWAV/wavpackage'
 export default {
   name: 'voice',
   data () {
     return {
-      button: document.getElementById('#button'),
-      textarea: document.querySelector('textarea'),
-      // colors: ['aqua', 'azure', 'beige', 'bisque', 'black', 'blue',
-      //   'brown', 'chocolate', 'coral', 'crimson', 'cyan', 'fuchsia',
-      //   'ghostwhite', 'gold', 'goldenrod', 'gray', 'green', 'indigo',
-      //   'ivory', 'khaki', 'lavender', 'lime', 'linen', 'magenta',
-      //   'maroon', 'moccasin', 'navy', 'olive', 'orange', 'orchid',
-      //   'peru', 'pink', 'plum', 'purple', 'red', 'salmon',
-      //   'sienna', 'silver', 'snow', 'tan', 'teal', 'thistle',
-      //   'tomato', 'turquoise', 'violet', 'white', 'yellow'],
+      // get Elements
+      button: null,
+      textarea: null,
+      player: null,
+      audioElement: null,
+      dataElement: null,
+      downloadLink: null,
+      recBtn: null,
+      pauseResBtn: null,
+      stopBtn: null,
+
+      // speech Recognition
       recognizing: null,
+      // eslint-disable-next-line
       recognition: new webkitSpeechRecognition(),
-      bg: document.querySelector('html'),
       result: '',
-      interimResult: ''
+      interimResult: '',
+
+      // record media
+      constraints: {audio: true},
+      localstream: null,
+      mediaRecorder: null,
+      chunks: [],
+      count: 0,
+      isRecord: false,
+
+      // check if Speech API is supported
+      check: true
     }
   },
   mounted () {
-    this.init();
+    // Speech Recognition
+    this.getElement()
+    this.init()
+    this.CheckAPIrecord()
     window.addEventListener('keyup', (e) => {
-      if(e.keyCode === 13) {
+      if (e.keyCode === 13) {
         this.toggleStartStop()
       }
     })
   },
   methods: {
+    getElement: function () {
+      this.button = document.querySelector('button#Speech')
+      this.textarea = document.querySelector('textarea')
+      this.player = document.getElementById('#player')
+      this.audioElement = document.querySelector('audio')
+      this.dataElement = document.querySelector('#data')
+      this.downloadLink = document.querySelector('a#downloadLink')
+      this.recBtn = document.querySelector('button#rec')
+      this.pauseResBtn = document.querySelector('button#pauseRes')
+      this.stopBtn = document.querySelector('button#stop')
+    },
+    switcher: function () {
+      if (this.check) this.toggleStartStop()
+      else {
+        if (this.isRecord) {
+          this.isRecord = false
+          this.button.textContent = 'Click to Speak'
+          this.onBtnStopClicked()
+        } else {
+          this.isRecord = true
+          this.button.textContent = 'Click to Stop'
+          this.onBtnRecordClicked()
+        }
+      }
+    },
     reset: function () {
       this.recognizing = false
     },
     init: function () {
+      console.log(this.recognition)
       this.recognition.continuous = true
       this.recognition.interimResults = true
       this.recognition.lang = 'vi-VN'
       this.reset()
-      this.recognition.onerror = function(event) {
-        console.error(event);
-      };
+      this.recognition.onerror = (event) => {
+        this.check = false
+        console.log(event)
+      }
+      this.check = false
       this.recognition.onend = this.reset()
       this.recognition.onresult = (event) => {
         for (var i = event.resultIndex; i < event.results.length; ++i) {
           if (event.results[i].isFinal) {
             this.result += event.results[i][0].transcript
-            textarea.value = this.result
-            console.log("return result: ", this.result)
-          }
-          else {
+            this.textarea.value = this.result
+            console.log('return result: ', this.result)
+          } else {
             this.interimResult = event.results[i][0].transcript
-            console.log("return interim result: ", this.interimResult)
+            console.log('return interim result: ', this.interimResult)
           }
         }
       }
@@ -69,12 +121,110 @@ export default {
     toggleStartStop: function () {
       if (this.recognizing) {
         this.recognition.stop()
+        this.button.textContent = 'Click to Speak'
         this.interimResult = ''
         this.reset()
       } else {
         this.recognition.start()
+        this.button.textContent = 'Click to Stop'
         this.recognizing = true
       }
+    },
+    CheckAPIrecord: function () {
+      if (!navigator.mediaDevices.getUserMedia) {
+        console.log('navigator.mediaDevices.getUserMedia is not supported')
+      } else if (window.MediaRecorder === undefined) {
+        console.log('Media Recorder is not supported')
+      } else {
+        navigator.mediaDevices.getUserMedia(this.constraints)
+          .then((stream) => {
+            this.localstream = stream
+            this.localstream.getAudioTracks().forEach((track) => {
+              if (track.kind === 'audio') {
+                console.log('audio track.onended Audio track.readyState=', track.readyState, ', track.muted=', track.muted)
+              }
+            })
+            try {
+              window.AudioContext = window.AudioContext || window.webkitAudioContext
+              window.audioContext = new AudioContext()
+              console.log('Web Audio API is supported')
+              console.log(window.audioContext)
+            } catch (e) {
+              console.log('Web Audio API is not supported')
+            }
+          }).catch((err) => {
+            console.log('navigator.getUserMedia error: ', err)
+          })
+        console.log('Web Audio API is online')
+      }
+    },
+    onBtnRecordClicked: function () {
+      console.log('Recording...')
+      if (this.localstream == null) {
+        console.log('Could not get local stream from mic')
+      } else {
+        console.log('Start Recording...')
+        if (typeof MediaRecorder.isTypeSupported === 'function') {
+          var option
+          if (MediaRecorder.isTypeSupported('audio/wav')) {
+            option = {mimeType: 'audio/wav'}
+          } else if (MediaRecorder.isTypeSupported('audio/webm')) {
+            option = {mimeType: 'audio/webm'}
+          } else if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
+            option = {mimeType: 'audo/webm;codes=opus'}
+          }
+          console.log('Using ', option.mimeType)
+          this.mediaRecorder = new MediaRecorder(this.localstream, option)
+        } else {
+          console.log('isTypeSupported is not supported')
+          this.mediaRecorder = new MediaRecorder(this.localstream)
+        }
+        this.mediaRecorder.ondataavailable = (e) => {
+          this.chunks.push(e.data)
+        }
+        this.mediaRecorder.onerror = (e) => {
+          console.log('mediaRecorder.onerror: ', e)
+        }
+        this.mediaRecorder.onstart = () => {
+          console.log('mediaRecorder.onstart, mediaRecorder.state = ', this.mediaRecorder.state)
+          this.localstream.getTracks().forEach((track) => {
+            if (track.kind === 'audio') {
+              console.log('onstart - Audio track.readyState = ', track.readyState, ', track.muted=', track.muted)
+            }
+          })
+        }
+        this.mediaRecorder.onstop = () => {
+          console.log('mediaRecorder.onstop, mediaRecorder.state = ', this.mediaRecorder.state)
+
+          var blob = new Blob(this.chunks, {type: 'audio/webm'})
+          this.chunks = []
+
+          var audioURL = window.URL.createObjectURL(blob)
+
+          this.downloadLink.href = audioURL
+          this.downloadLink.innerHTML = 'Download audio file'
+
+          var rand = Math.floor((Math.random() * 10000000))
+          var name = 'audio_' + rand + '.wav'
+
+          this.downloadLink.setAttribute('download', name)
+          this.downloadLink.setAttribute('name', name)
+        }
+
+        this.mediaRecorder.onwarning = (e) => {
+          console.log('mediaRecorder.onwarning: ', e)
+        }
+
+        this.mediaRecorder.start(10)
+
+        // this.localStream.getTracks().forEach((track) => {
+        //   console.log(track.kind, ':', JSON.stringify(track.getSettings()))
+        //   console.log(track.getSettings())
+        // })
+      }
+    },
+    onBtnStopClicked: function () {
+      this.mediaRecorder.stop()
     }
   }
 }
