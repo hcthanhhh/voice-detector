@@ -6,7 +6,7 @@
       <textarea id="textarea" rows=10 cols=80 style="font-size: 2em"></textarea>
     </div>
     <div>
-      <button id="Speech" v-on:click="switcher()" style="font-size: 2em">Click to speak</button>
+      <button id="Speech" v-on:click="toggleStartStop()" style="font-size: 2em">Click to speak</button>
     </div>
     <!-- <div>
       <button id="rec" v-on:click="onBtnRecordClicked()">Record</button>
@@ -108,6 +108,8 @@ export default {
           this.recognition.lang = 'en-US'
         }
       }
+      this.check = false
+      this.recognition.lang = 'en-US'
       this.recognition.onend = this.reset()
       this.recognition.onresult = (event) => {
         for (var i = event.resultIndex; i < event.results.length; ++i) {
