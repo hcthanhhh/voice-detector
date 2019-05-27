@@ -19,6 +19,7 @@
 
 <script type="text/javascript">
 // import wavpackage from '../services/convertWAV/wavpackage'
+// import axios from 'axios'
 export default {
   name: 'voice',
   data () {
@@ -26,13 +27,7 @@ export default {
       // get Elements
       button: null,
       textarea: null,
-      player: null,
-      audioElement: null,
-      dataElement: null,
       downloadLink: null,
-      recBtn: null,
-      pauseResBtn: null,
-      stopBtn: null,
 
       // speech Recognition
       recognizing: null,
@@ -69,13 +64,7 @@ export default {
     getElement: function () {
       this.button = document.querySelector('button#Speech')
       this.textarea = document.querySelector('textarea')
-      this.player = document.getElementById('#player')
-      this.audioElement = document.querySelector('audio')
-      this.dataElement = document.querySelector('#data')
       this.downloadLink = document.querySelector('a#downloadLink')
-      this.recBtn = document.querySelector('button#rec')
-      this.pauseResBtn = document.querySelector('button#pauseRes')
-      this.stopBtn = document.querySelector('button#stop')
     },
     switcher: function () {
       if (this.check) this.toggleStartStop()
@@ -108,6 +97,8 @@ export default {
           this.recognition.lang = 'en-US'
         }
       }
+      // this.check = false
+      // this.recognition.lang = 'en-US'
       this.recognition.onend = this.reset()
       this.recognition.onresult = (event) => {
         for (var i = event.resultIndex; i < event.results.length; ++i) {
@@ -156,6 +147,7 @@ export default {
               var AudioContext = window.AudioContext || window.webkitAudioContext
               this.audioContext = new AudioContext()
               console.log('Web Audio API is supported')
+
               console.log(this.audioContext)
             } catch (e) {
               console.log('Web Audio API is not supported')
@@ -224,11 +216,6 @@ export default {
         }
 
         this.mediaRecorder.start(10)
-
-        // this.localStream.getTracks().forEach((track) => {
-        //   console.log(track.kind, ':', JSON.stringify(track.getSettings()))
-        //   console.log(track.getSettings())
-        // })
       }
     },
     onBtnStopClicked: function () {
