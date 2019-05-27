@@ -37,7 +37,7 @@ export default {
       // speech Recognition
       recognizing: null,
       // eslint-disable-next-line
-      recognition: new webkitSpeechRecognition(),
+      recognition: new window.webkitSpeechRecognition(),
       result: '',
       interimResult: '',
 
@@ -48,6 +48,7 @@ export default {
       chunks: [],
       count: 0,
       isRecord: false,
+      audioContext: null,
 
       // check if Speech API is supported
       check: true
@@ -100,8 +101,12 @@ export default {
       this.recognition.lang = 'vi-VN'
       this.reset()
       this.recognition.onerror = (event) => {
-        this.check = false
         console.log(event)
+        if (event.error === 'no-speech') this.toggleStartStop()
+        if (event.error === 'language-not-supported') {
+          this.check = false
+          this.recognition.lang = 'en-US'
+        }
       }
       this.recognition.onend = this.reset()
       this.recognition.onresult = (event) => {
@@ -120,12 +125,16 @@ export default {
     toggleStartStop: function () {
       if (this.recognizing) {
         this.recognition.stop()
+        if (!this.check) this.onBtnStopClicked()
         this.button.textContent = 'Click to Speak'
+        console.log('stop recognizing')
         this.interimResult = ''
         this.reset()
       } else {
         this.recognition.start()
+        if (!this.check) this.onBtnRecordClicked()
         this.button.textContent = 'Click to Stop'
+        console.log('start recognizing')
         this.recognizing = true
       }
     },
@@ -144,10 +153,10 @@ export default {
               }
             })
             try {
-              window.AudioContext = window.AudioContext || window.webkitAudioContext
-              window.audioContext = new AudioContext()
+              var AudioContext = window.AudioContext || window.webkitAudioContext
+              this.audioContext = new AudioContext()
               console.log('Web Audio API is supported')
-              console.log(window.audioContext)
+              console.log(this.audioContext)
             } catch (e) {
               console.log('Web Audio API is not supported')
             }
@@ -158,10 +167,10 @@ export default {
       }
     },
     onBtnRecordClicked: function () {
-      // console.log('Recording...')
-      // if (this.localstream == null) {
-      //   console.log('Could not get local stream from mic')
-      // } else {
+      console.log('Recording...')
+      if (this.localstream == null) {
+        console.log('Could not get local stream from mic')
+      } else {
         console.log('Start Recording...')
         if (typeof MediaRecorder.isTypeSupported === 'function') {
           var option
@@ -220,7 +229,7 @@ export default {
         //   console.log(track.kind, ':', JSON.stringify(track.getSettings()))
         //   console.log(track.getSettings())
         // })
-      // }
+      }
     },
     onBtnStopClicked: function () {
       this.mediaRecorder.stop()
