@@ -93,7 +93,7 @@ export default {
           this.recognition.lang = ''
         }
       }
-      this.check = false
+      // this.check = false
       // this.recognition.lang = 'en-US'  
       this.recognition.onend = this.reset()
       this.recognition.soundstart = () => {
@@ -122,7 +122,7 @@ export default {
         this.reset()
       } else {
         this.recognition.start()
-        // if (!this.check) this.onBtnRecordClicked()
+        if (!this.check) this.onBtnRecordClicked()
         this.button.textContent = 'Click to Stop'
         console.log('start recognizing')
         this.recognizing = true
