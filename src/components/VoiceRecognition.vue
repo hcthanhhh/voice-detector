@@ -93,7 +93,7 @@ export default {
           this.recognition.lang = ''
         }
       }
-      // this.check = false
+      this.check = false
       // this.recognition.lang = 'en-US'  
       this.recognition.onend = this.reset()
       this.recognition.onresult = (event) => {
