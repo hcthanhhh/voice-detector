@@ -96,6 +96,9 @@ export default {
       this.check = false
       // this.recognition.lang = 'en-US'  
       this.recognition.onend = this.reset()
+      this.recognition.soundstart = () => {
+        if (!this.check) onBtnRecordClicked()
+      }
       this.recognition.onresult = (event) => {
         for (var i = event.resultIndex; i < event.results.length; ++i) {
           if (event.results[i].isFinal) {
@@ -119,7 +122,7 @@ export default {
         this.reset()
       } else {
         this.recognition.start()
-        if (!this.check) this.onBtnRecordClicked()
+        // if (!this.check) this.onBtnRecordClicked()
         this.button.textContent = 'Click to Stop'
         console.log('start recognizing')
         this.recognizing = true
