@@ -82,6 +82,7 @@ export default {
       console.log(this.recognition)
       this.recognition.continuous = true
       this.recognition.interimResults = true
+      console.log(this.recognition.lang)
       this.recognition.lang = 'vi-VN'
       this.reset()
       this.recognition.onerror = (event) => {
@@ -89,7 +90,7 @@ export default {
         if (event.error === 'no-speech') this.toggleStartStop()
         if (event.error === 'language-not-supported') {
           this.check = false
-          this.recognition.lang = 'en-US'
+          this.recognition.lang = ''
         }
       }
       // this.check = false
