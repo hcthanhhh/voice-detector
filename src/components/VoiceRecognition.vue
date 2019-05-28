@@ -8,11 +8,6 @@
     <div>
       <button id="Speech" v-on:click="toggleStartStop()" style="font-size: 2em">Click to speak</button>
     </div>
-    <!-- <div>
-      <button id="rec" v-on:click="onBtnRecordClicked()">Record</button>
-      <button id="pauseRes" v-on:click="onPauseResumeClicked()" disabled>Pause</button>
-      <button id="stop" v-on:click="onBtnStopClicked()" disabled>Stop</button>
-    </div> -->
     <a id="downloadLink"></a>
   </div>
 </template>
@@ -97,8 +92,8 @@ export default {
           this.recognition.lang = 'en-US'
         }
       }
-      this.check = false
-      this.recognition.lang = 'en-US'  
+      // this.check = false
+      // this.recognition.lang = 'en-US'  
       this.recognition.onend = this.reset()
       this.recognition.onresult = (event) => {
         for (var i = event.resultIndex; i < event.results.length; ++i) {
