@@ -82,7 +82,7 @@ export default {
       console.log(this.recognition)
       this.recognition.continuous = true
       this.recognition.interimResults = true
-      console.log('language: ',this.recognition.lang)
+      console.log('language: ', this.recognition.lang)
       // this.recognition.lang = 'vi-VN'
       this.reset()
       this.recognition.onerror = (event) => {
@@ -94,11 +94,8 @@ export default {
         }
       }
       // this.check = false
-      // this.recognition.lang = 'en-US'  
+      // this.recognition.lang = 'en-US'
       this.recognition.onend = this.reset()
-      this.recognition.soundstart = () => {
-        if (!this.check) onBtnRecordClicked()
-      }
       this.recognition.onresult = (event) => {
         for (var i = event.resultIndex; i < event.results.length; ++i) {
           if (event.results[i].isFinal) {
