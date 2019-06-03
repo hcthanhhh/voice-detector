@@ -82,8 +82,13 @@ export default {
       console.log(this.recognition)
       this.recognition.continuous = true
       this.recognition.interimResults = true
+<<<<<<< HEAD
       console.log('language:', this.recognition.lang)
       this.recognition.lang = 'vi-VN'
+=======
+      console.log('language: ', this.recognition.lang)
+      // this.recognition.lang = 'vi-VN'
+>>>>>>> a289201d8f013574de17ff57d60469d76ad9dfbc
       this.reset()
       this.recognition.onerror = (event) => {
         console.log(event)
