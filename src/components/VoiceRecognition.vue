@@ -48,7 +48,7 @@ export default {
     // Speech Recognition
     this.getElement()
     this.init()
-    this.CheckAPIrecord()
+    if (this.check) this.CheckAPIrecord()
     window.addEventListener('keyup', (e) => {
       if (e.keyCode === 13) {
         this.switcher()
