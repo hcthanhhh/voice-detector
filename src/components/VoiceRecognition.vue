@@ -92,6 +92,10 @@ export default {
           this.check = false
           this.recognition.lang = ''
         }
+        if (event.error === 'not-allowed') {
+          this.toggleStartStop()
+          alert('cannot use your microphone!')
+        }
       }
       // this.check = false
       // this.recognition.lang = 'en-US'
