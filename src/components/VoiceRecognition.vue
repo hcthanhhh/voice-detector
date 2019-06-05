@@ -48,7 +48,7 @@ export default {
     // Speech Recognition
     this.getElement()
     this.init()
-    if (this.check) this.CheckAPIrecord()
+    if (!this.check) this.CheckAPIrecord()
     window.addEventListener('keyup', (e) => {
       if (e.keyCode === 13) {
         this.switcher()
@@ -83,8 +83,8 @@ export default {
       this.recognition.continuous = true
       this.recognition.interimResults = true
       console.log('language:', this.recognition.lang)
-      this.recognition.lang = 'vi-VN'
-      this.reset()
+      // this.recognition.lang = 'vi-VN'
+      // this.reset()
       this.recognition.onerror = (event) => {
         console.log(event)
         if (event.error === 'no-speech') this.toggleStartStop()
@@ -93,9 +93,12 @@ export default {
           this.recognition.lang = ''
         }
       }
-      // this.check =gitgitgit false
+      // this.check = false
       // this.recognition.lang = 'en-US'
-      this.recognition.onend = this.reset()
+      // this.recognition.onend = this.reset()
+      this.recognition.onend = () => {
+        this.recognizing = false
+      }
       this.recognition.onresult = (event) => {
         for (var i = event.resultIndex; i < event.results.length; ++i) {
           if (event.results[i].isFinal) {
@@ -116,13 +119,15 @@ export default {
         this.button.textContent = 'Click to Speak'
         console.log('stop recognizing')
         this.interimResult = ''
-        this.reset()
+        this.recognizing = false
+        console.log('check: ',this.recognizing)
       } else {
         this.recognition.start()
         if (!this.check) this.onBtnRecordClicked()
         this.button.textContent = 'Click to Stop'
         console.log('start recognizing')
         this.recognizing = true
+        console.log('check: ',this.recognizing)
       }
     },
     CheckAPIrecord: function () {
