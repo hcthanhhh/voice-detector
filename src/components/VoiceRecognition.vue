@@ -48,7 +48,7 @@ export default {
     // Speech Recognition
     this.getElement()
     this.init()
-    this.CheckAPIrecord()
+    if (this.check) this.CheckAPIrecord()
     window.addEventListener('keyup', (e) => {
       if (e.keyCode === 13) {
         this.switcher()
@@ -82,8 +82,8 @@ export default {
       console.log(this.recognition)
       this.recognition.continuous = true
       this.recognition.interimResults = true
-      console.log('language: ', this.recognition.lang)
-      // this.recognition.lang = 'vi-VN'
+      console.log('language:', this.recognition.lang)
+      this.recognition.lang = 'vi-VN'
       this.reset()
       this.recognition.onerror = (event) => {
         console.log(event)
@@ -93,7 +93,7 @@ export default {
           this.recognition.lang = ''
         }
       }
-      // this.check = false
+      // this.check =gitgitgit false
       // this.recognition.lang = 'en-US'
       this.recognition.onend = this.reset()
       this.recognition.onresult = (event) => {
