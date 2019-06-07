@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-
+    <HelloWorld/>
     <VoiceRecognition @clicked="onClickChild"/>
      <p>result: {{result}}</p>
     <!-- <router-view/> -->
@@ -9,6 +9,7 @@
 
 <script>
 import VoiceRecognition from './components/VoiceRecognition.vue'
+import HelloWorld from './components/HelloWorld.vue'
 export default {
   name: 'App',
   props: {
@@ -20,7 +21,8 @@ export default {
     }
   },
   components: {
-    VoiceRecognition
+    VoiceRecognition,
+    HelloWorld
   },
   methods: {
     onClickChild: function (value) {
@@ -38,6 +40,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  /* margin-top: 60px; */
 }
 </style>

@@ -2,11 +2,14 @@
 
 <template>
   <div id="VoiceRecognition">
-    <div id="search">
-      <input type="text" v-model = "result">
-      <button id="Speech" v-on:click="toggleStartStop()"><img id="microbutton" src="https://img.icons8.com/material/24/000000/microphone.png" alt="" srcset=""></button>
+    <button id="Speech" v-on:click="toggleStartStop()"><img id="microbutton" src="https://img.icons8.com/material/24/000000/microphone.png" alt="" srcset=""></button>
+    <div id="search" class="modal">
+      <div class="modal-content">
+        <span class="close" v-on:click="toggleStartStop()"><button><img src="https://img.icons8.com/material/24/000000/block_microphone.png" alt="" srcset=""></button></span>
+        <textarea id="textarea" type="text" v-model = "result"></textarea>
+        <a id="downloadLink"></a>
+      </div>
     </div>
-    <a id="downloadLink"></a>
   </div>
 </template>
 
@@ -19,15 +22,17 @@ export default {
     return {
       // get Elements
       button: null,
-      input: null,
+      textarea: null,
       downloadLink: null,
       microbutton: null,
+      modal: null,
+      span: null,
 
       // speech Recognition
       recognizing: null,
       // eslint-disable-next-line
       recognition: new window.webkitSpeechRecognition(),
-      result: '',
+      result: 'say something!',
       interimResult: '',
 
       // record media
@@ -53,13 +58,20 @@ export default {
         this.switcher()
       }
     })
+    window.onclick = function (event) {
+      if (event.target === this.modal) {
+        this.modal.style.display = 'none'
+      }
+    }
   },
   methods: {
     getElement: function () {
       this.button = document.querySelector('button#Speech')
-      this.input = document.querySelector('input')
+      this.textarea = document.querySelector('textarea')
       this.downloadLink = document.querySelector('a#downloadLink')
       this.microbutton = document.getElementById('microbutton')
+      this.span = document.getElementsByClassName('close')[0]
+      this.modal = document.getElementById('search')
     },
     switcher: function () {
       if (this.check) this.toggleStartStop()
@@ -102,16 +114,18 @@ export default {
       // this.recognition.onend = this.reset()
       this.recognition.onend = () => {
         this.recognizing = false
+        this.result = 'say something!'
       }
       this.recognition.onresult = (event) => {
         for (var i = event.resultIndex; i < event.results.length; ++i) {
           if (event.results[i].isFinal) {
-            this.result += event.results[i][0].transcript
-            // this.input.value = this.result
+            this.result = event.results[i][0].transcript
+            // this.textarea.value = this.result
             console.log('return result: ', this.result)
             // this.$emit('clicked', this.result)
           } else {
-            this.interimResult = event.results[i][0].transcript
+            // this.interimResult = event.results[i][0].transcript
+            this.result = event.results[i][0].transcript
             console.log('return interim result: ', this.interimResult)
           }
         }
@@ -122,19 +136,17 @@ export default {
         this.recognition.stop()
         if (!this.check) this.onBtnStopClicked()
         // this.button.textContent = 'Click to Speak'
-        this.microbutton.src = 'https://img.icons8.com/material/24/000000/microphone.png'
         console.log('stop recognizing')
         this.interimResult = ''
         this.recognizing = false
-
+        this.modal.style.display = 'none'
         this.$emit('clicked', this.result)
-        
         console.log('check: ', this.recognizing)
       } else {
         this.recognition.start()
         if (!this.check) this.onBtnRecordClicked()
-        this.microbutton.src = 'https://img.icons8.com/material/24/000000/block_microphone.png'
-        this.input.focus()
+        this.modal.style.display = 'block'
+        // this.textarea.focus()
         // this.button.textContent = 'Click to Stop'
         console.log('start recognizing')
         this.recognizing = true
@@ -237,3 +249,44 @@ export default {
 }
 </script>
 
+<style scoped>
+  #VoiceRecognition {
+    overflow: hidden;
+    background-color: #f1f1f1;
+    padding: 20px 10px;
+  }
+  /* The Modal background */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+
+  /* Modal content box */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+  .close {
+    color: #aaa;
+    float: right;
+  }
+  .close:hover .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  #textarea {
+    border-style: hidden
+  }
+</style>
