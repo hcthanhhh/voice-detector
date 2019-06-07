@@ -1,12 +1,33 @@
 <template>
   <div id="app">
-    <router-view/>
+
+    <VoiceRecognition @clicked="onClickChild"/>
+     <p>result: {{result}}</p>
+    <!-- <router-view/> -->
   </div>
 </template>
 
 <script>
+import VoiceRecognition from './components/VoiceRecognition.vue'
 export default {
-  name: 'App'
+  name: 'App',
+  props: {
+    method: {type: Function}
+  },
+  data () {
+    return {
+      result: ''
+    }
+  },
+  components: {
+    VoiceRecognition
+  },
+  methods: {
+    onClickChild: function (value) {
+      this.result = value
+      console.log('value', value)
+    }
+  }
 }
 </script>
 

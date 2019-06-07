@@ -2,11 +2,9 @@
 
 <template>
   <div id="VoiceRecognition">
-    <div>
-      <textarea id="textarea" rows=10 cols=80 style="font-size: 2em"></textarea>
-    </div>
-    <div>
-      <button id="Speech" v-on:click="toggleStartStop()" style="font-size: 2em">Click to speak</button>
+    <div id="search">
+      <input type="text" v-model = "result">
+      <button id="Speech" v-on:click="toggleStartStop()"><img id="microbutton" src="https://img.icons8.com/material/24/000000/microphone.png" alt="" srcset=""></button>
     </div>
     <a id="downloadLink"></a>
   </div>
@@ -16,13 +14,14 @@
 // import wavpackage from '../services/convertWAV/wavpackage'
 // import axios from 'axios'
 export default {
-  name: 'voice',
+  name: 'VoiceRecognition',
   data () {
     return {
       // get Elements
       button: null,
-      textarea: null,
+      input: null,
       downloadLink: null,
+      microbutton: null,
 
       // speech Recognition
       recognizing: null,
@@ -58,19 +57,20 @@ export default {
   methods: {
     getElement: function () {
       this.button = document.querySelector('button#Speech')
-      this.textarea = document.querySelector('textarea')
+      this.input = document.querySelector('input')
       this.downloadLink = document.querySelector('a#downloadLink')
+      this.microbutton = document.getElementById('microbutton')
     },
     switcher: function () {
       if (this.check) this.toggleStartStop()
       else {
         if (this.isRecord) {
           this.isRecord = false
-          this.button.textContent = 'Click to Speak'
+          // this.button.textContent = 'Click to Speak'
           this.onBtnStopClicked()
         } else {
           this.isRecord = true
-          this.button.textContent = 'Click to Stop'
+          // this.button.textContent = 'Click to Stop'
           this.onBtnRecordClicked()
         }
       }
@@ -107,8 +107,9 @@ export default {
         for (var i = event.resultIndex; i < event.results.length; ++i) {
           if (event.results[i].isFinal) {
             this.result += event.results[i][0].transcript
-            this.textarea.value = this.result
+            // this.input.value = this.result
             console.log('return result: ', this.result)
+            // this.$emit('clicked', this.result)
           } else {
             this.interimResult = event.results[i][0].transcript
             console.log('return interim result: ', this.interimResult)
@@ -116,22 +117,28 @@ export default {
         }
       }
     },
-    toggleStartStop: function () {
+    toggleStartStop: function (event) {
       if (this.recognizing) {
         this.recognition.stop()
         if (!this.check) this.onBtnStopClicked()
-        this.button.textContent = 'Click to Speak'
+        // this.button.textContent = 'Click to Speak'
+        this.microbutton.src = 'https://img.icons8.com/material/24/000000/microphone.png'
         console.log('stop recognizing')
         this.interimResult = ''
         this.recognizing = false
-        console.log('check: ',this.recognizing)
+
+        this.$emit('clicked', this.result)
+        
+        console.log('check: ', this.recognizing)
       } else {
         this.recognition.start()
         if (!this.check) this.onBtnRecordClicked()
-        this.button.textContent = 'Click to Stop'
+        this.microbutton.src = 'https://img.icons8.com/material/24/000000/block_microphone.png'
+        this.input.focus()
+        // this.button.textContent = 'Click to Stop'
         console.log('start recognizing')
         this.recognizing = true
-        console.log('check: ',this.recognizing)
+        console.log('check: ', this.recognizing)
       }
     },
     CheckAPIrecord: function () {
