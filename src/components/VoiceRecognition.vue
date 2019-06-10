@@ -16,6 +16,7 @@
 <script type="text/javascript">
 // import wavpackage from '../services/convertWAV/wavpackage'
 // import axios from 'axios'
+// import Vue from 'vue'
 export default {
   name: 'VoiceRecognition',
   data () {
@@ -246,12 +247,13 @@ export default {
       this.mediaRecorder.stop()
     }
   }
+  // },
   // directives: {
   //   VoiceRecognition: {
   //     update: function (el, b, n, o) {
 
   //     },
-  //     bind: function (el, binding, vnode){
+  //     bind: function (el, binding, vnode) {
   //       console.log('binding')
   //       var s = JSON.stringify
   //       el.innerHTML = 'value' + s(binding.value)
@@ -259,6 +261,7 @@ export default {
   //   }
   // }
 }
+// Vue.directives('voice-search', VoiceRecognition)
 </script>
 
 <style scoped>

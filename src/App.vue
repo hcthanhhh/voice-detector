@@ -1,8 +1,9 @@
 <template>
   <div id="app">
     <HelloWorld/>
-    <VoiceRecognition @clicked="onClickChild"/>
+    <!-- <VoiceRecognition @clicked="onClickChild"/> -->
     <p>result: {{result}}</p>
+    <div v-voice-search></div>
     <!-- <router-view/> -->
   </div>
 </template>
@@ -10,6 +11,8 @@
 <script>
 import VoiceRecognition from './components/VoiceRecognition.vue'
 import HelloWorld from './components/HelloWorld.vue'
+import {VoiceSearch} from './components/voicesearch.vue'
+// import Vue from 'vue'
 export default {
   name: 'App',
   props: {
@@ -19,6 +22,9 @@ export default {
     return {
       result: ''
     }
+  },
+  directives: {
+    VoiceSearch
   },
   components: {
     VoiceRecognition,
@@ -32,6 +38,7 @@ export default {
     }
   }
 }
+// Vue.directives('voice-search', VoiceSearch);
 </script>
 
 <style>
