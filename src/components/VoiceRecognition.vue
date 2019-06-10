@@ -1,7 +1,7 @@
 //VoiceRecognition.vue
 
 <template>
-  <div id="VoiceRecognition">
+  <div id="VoiceRecognition" class="overlay">
     <button id="Speech" v-on:click="toggleStartStop()"><img id="microbutton" src="https://img.icons8.com/material/24/000000/microphone.png" alt="" srcset=""></button>
     <div id="search" class="modal">
       <div class="modal-content">
@@ -126,7 +126,7 @@ export default {
           } else {
             // this.interimResult = event.results[i][0].transcript
             this.result = event.results[i][0].transcript
-            console.log('return interim result: ', this.interimResult)
+            console.log('return interim result: ', this.result)
           }
         }
       }
@@ -246,6 +246,18 @@ export default {
       this.mediaRecorder.stop()
     }
   }
+  // directives: {
+  //   VoiceRecognition: {
+  //     update: function (el, b, n, o) {
+
+  //     },
+  //     bind: function (el, binding, vnode){
+  //       console.log('binding')
+  //       var s = JSON.stringify
+  //       el.innerHTML = 'value' + s(binding.value)
+  //     }
+  //   }
+  // }
 }
 </script>
 

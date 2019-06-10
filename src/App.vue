@@ -2,7 +2,7 @@
   <div id="app">
     <HelloWorld/>
     <VoiceRecognition @clicked="onClickChild"/>
-     <p>result: {{result}}</p>
+    <p>result: {{result}}</p>
     <!-- <router-view/> -->
   </div>
 </template>
@@ -26,7 +26,8 @@ export default {
   },
   methods: {
     onClickChild: function (value) {
-      this.result = value
+      if (value === 'say something!') this.result = 'Cannot recognize your voice!! Please try again!!'
+      else this.result = value
       console.log('value', value)
     }
   }
