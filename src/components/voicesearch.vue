@@ -7,7 +7,7 @@ let recognizing = false;
 let result = null;
 
 export const VoiceSearch = {
-    bind(el, bindings, Vnode, oldVnode) {
+    bind(el, bindings, vnode, oldVnode) {
         console.log('inserted')
         let self = vnode.context;
         let vModelName = bindings.value;
@@ -55,8 +55,9 @@ export const VoiceSearch = {
             }
         }
 
-        windows.addEventListener('keyup', (e) => {
+        el.addEventListener('keyup', (e) => {
             if (e.keycode === 13) {
+                console.log('enter')
                 toggleStartStop()
             }
         })
