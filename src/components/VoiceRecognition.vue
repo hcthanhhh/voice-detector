@@ -1,34 +1,39 @@
 //VoiceRecognition.vue
 
 <template>
-  <div id="VoiceRecognition">
-    <div>
-      <textarea id="textarea" rows=10 cols=80 style="font-size: 2em"></textarea>
+  <div id="VoiceRecognition" class="overlay">
+    <button id="Speech" v-on:click="toggleStartStop()"><img id="microbutton" src="https://img.icons8.com/material/24/000000/microphone.png" alt="" srcset=""></button>
+    <div id="search" class="modal">
+      <div class="modal-content">
+        <span class="close" v-on:click="toggleStartStop()"><button><img src="https://img.icons8.com/material/24/000000/block_microphone.png" alt="" srcset=""></button></span>
+        <textarea id="textarea" type="text" v-model = "result"></textarea>
+        <a id="downloadLink"></a>
+      </div>
     </div>
-    <div>
-      <button id="Speech" v-on:click="toggleStartStop()" style="font-size: 2em">Click to speak</button>
-    </div>
-    <a id="downloadLink"></a>
   </div>
 </template>
 
 <script type="text/javascript">
 // import wavpackage from '../services/convertWAV/wavpackage'
 // import axios from 'axios'
+// import Vue from 'vue'
 export default {
-  name: 'voice',
+  name: 'VoiceRecognition',
   data () {
     return {
       // get Elements
       button: null,
       textarea: null,
       downloadLink: null,
+      microbutton: null,
+      modal: null,
+      span: null,
 
       // speech Recognition
       recognizing: null,
       // eslint-disable-next-line
       recognition: new window.webkitSpeechRecognition(),
-      result: '',
+      result: 'say something!',
       interimResult: '',
 
       // record media
@@ -48,29 +53,37 @@ export default {
     // Speech Recognition
     this.getElement()
     this.init()
-    if (this.check) this.CheckAPIrecord()
+    if (!this.check) this.CheckAPIrecord()
     window.addEventListener('keyup', (e) => {
       if (e.keyCode === 13) {
         this.switcher()
       }
     })
+    window.onclick = function (event) {
+      if (event.target === this.modal) {
+        this.modal.style.display = 'none'
+      }
+    }
   },
   methods: {
     getElement: function () {
       this.button = document.querySelector('button#Speech')
       this.textarea = document.querySelector('textarea')
       this.downloadLink = document.querySelector('a#downloadLink')
+      this.microbutton = document.getElementById('microbutton')
+      this.span = document.getElementsByClassName('close')[0]
+      this.modal = document.getElementById('search')
     },
     switcher: function () {
       if (this.check) this.toggleStartStop()
       else {
         if (this.isRecord) {
           this.isRecord = false
-          this.button.textContent = 'Click to Speak'
+          // this.button.textContent = 'Click to Speak'
           this.onBtnStopClicked()
         } else {
           this.isRecord = true
-          this.button.textContent = 'Click to Stop'
+          // this.button.textContent = 'Click to Stop'
           this.onBtnRecordClicked()
         }
       }
@@ -83,8 +96,8 @@ export default {
       this.recognition.continuous = true
       this.recognition.interimResults = true
       console.log('language:', this.recognition.lang)
-      this.recognition.lang = 'vi-VN'
-      this.reset()
+      // this.recognition.lang = 'vi-VN'
+      // this.reset()
       this.recognition.onerror = (event) => {
         console.log(event)
         if (event.error === 'no-speech') this.toggleStartStop()
@@ -92,37 +105,53 @@ export default {
           this.check = false
           this.recognition.lang = ''
         }
+        if (event.error === 'not-allowed') {
+          this.toggleStartStop()
+          alert('cannot use your microphone!')
+        }
       }
-      // this.check =gitgitgit false
+      // this.check = false
       // this.recognition.lang = 'en-US'
-      this.recognition.onend = this.reset()
+      // this.recognition.onend = this.reset()
+      this.recognition.onend = () => {
+        this.recognizing = false
+        this.result = 'say something!'
+      }
       this.recognition.onresult = (event) => {
         for (var i = event.resultIndex; i < event.results.length; ++i) {
           if (event.results[i].isFinal) {
-            this.result += event.results[i][0].transcript
-            this.textarea.value = this.result
+            this.result = event.results[i][0].transcript
+            // this.textarea.value = this.result
             console.log('return result: ', this.result)
+            // this.$emit('clicked', this.result)
           } else {
-            this.interimResult = event.results[i][0].transcript
-            console.log('return interim result: ', this.interimResult)
+            // this.interimResult = event.results[i][0].transcript
+            this.result = event.results[i][0].transcript
+            console.log('return interim result: ', this.result)
           }
         }
       }
     },
-    toggleStartStop: function () {
+    toggleStartStop: function (event) {
       if (this.recognizing) {
         this.recognition.stop()
         if (!this.check) this.onBtnStopClicked()
-        this.button.textContent = 'Click to Speak'
+        // this.button.textContent = 'Click to Speak'
         console.log('stop recognizing')
         this.interimResult = ''
-        this.reset()
+        this.recognizing = false
+        this.modal.style.display = 'none'
+        this.$emit('clicked', this.result)
+        console.log('check: ', this.recognizing)
       } else {
         this.recognition.start()
         if (!this.check) this.onBtnRecordClicked()
-        this.button.textContent = 'Click to Stop'
+        this.modal.style.display = 'block'
+        // this.textarea.focus()
+        // this.button.textContent = 'Click to Stop'
         console.log('start recognizing')
         this.recognizing = true
+        console.log('check: ', this.recognizing)
       }
     },
     CheckAPIrecord: function () {
@@ -218,5 +247,61 @@ export default {
       this.mediaRecorder.stop()
     }
   }
+  // },
+  // directives: {
+  //   VoiceRecognition: {
+  //     update: function (el, b, n, o) {
+
+  //     },
+  //     bind: function (el, binding, vnode) {
+  //       console.log('binding')
+  //       var s = JSON.stringify
+  //       el.innerHTML = 'value' + s(binding.value)
+  //     }
+  //   }
+  // }
 }
+// Vue.directives('voice-search', VoiceRecognition)
 </script>
+
+<style scoped>
+  #VoiceRecognition {
+    overflow: hidden;
+    background-color: #f1f1f1;
+    padding: 20px 10px;
+  }
+  /* The Modal background */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+
+  /* Modal content box */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+  .close {
+    color: #aaa;
+    float: right;
+  }
+  .close:hover .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  #textarea {
+    border-style: hidden
+  }
+</style>

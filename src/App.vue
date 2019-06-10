@@ -1,13 +1,44 @@
 <template>
   <div id="app">
-    <router-view/>
+    <HelloWorld/>
+    <!-- <VoiceRecognition @clicked="onClickChild"/> -->
+    <p>result: {{result}}</p>
+    <div v-voice-search></div>
+    <!-- <router-view/> -->
   </div>
 </template>
 
 <script>
+import VoiceRecognition from './components/VoiceRecognition.vue'
+import HelloWorld from './components/HelloWorld.vue'
+import {VoiceSearch} from './components/voicesearch.vue'
+// import Vue from 'vue'
 export default {
-  name: 'App'
+  name: 'App',
+  props: {
+    method: {type: Function}
+  },
+  data () {
+    return {
+      result: ''
+    }
+  },
+  directives: {
+    VoiceSearch
+  },
+  components: {
+    VoiceRecognition,
+    HelloWorld
+  },
+  methods: {
+    onClickChild: function (value) {
+      if (value === 'say something!') this.result = 'Cannot recognize your voice!! Please try again!!'
+      else this.result = value
+      console.log('value', value)
+    }
+  }
 }
+// Vue.directives('voice-search', VoiceSearch);
 </script>
 
 <style>
@@ -17,6 +48,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  /* margin-top: 60px; */
 }
 </style>
