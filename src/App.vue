@@ -1,9 +1,10 @@
 <template>
   <div id="app">
     <HelloWorld/>
-    <VoiceRecognition @clicked="onClickChild"/>
+    <!-- <VoiceRecognition @clicked="onClickChild"/> -->
     <p>result: {{result}}</p>
-    <!-- <input v-voice-search/> -->
+    <input v-voice-search/>
+    <button v-voice-search:record>Click</button>
     <!-- <router-view/> -->
   </div>
 </template>
@@ -11,7 +12,7 @@
 <script>
 import VoiceRecognition from './components/VoiceRecognition.vue'
 import HelloWorld from './components/HelloWorld.vue'
-// import {VoiceSearch} from './components/voicesearch.vue'
+import {VoiceSearch} from './components/voicesearch.vue'
 // import Vue from 'vue'
 export default {
   name: 'App',
@@ -23,9 +24,9 @@ export default {
       result: ''
     }
   },
-  // directives: {
-  //   VoiceSearch
-  // },
+  directives: {
+    VoiceSearch
+  },
   components: {
     VoiceRecognition,
     HelloWorld
