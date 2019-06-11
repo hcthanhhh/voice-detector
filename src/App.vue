@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <HelloWorld/>
-    <!-- <VoiceRecognition @clicked="onClickChild"/> -->
+    <VoiceRecognition @clicked="onClickChild"/>
     <p>result: {{result}}</p>
-    <div v-voice-search></div>
+    <!-- <input v-voice-search/> -->
     <!-- <router-view/> -->
   </div>
 </template>
