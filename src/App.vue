@@ -3,7 +3,7 @@
     <HelloWorld/>
     <VoiceRecognition @clicked="onClickChild"/>
     <p>result: {{result}}</p>
-    <div v-voice-search></div>
+    <!-- <input v-voice-search/> -->
     <!-- <router-view/> -->
   </div>
 </template>
@@ -11,7 +11,7 @@
 <script>
 import VoiceRecognition from './components/VoiceRecognition.vue'
 import HelloWorld from './components/HelloWorld.vue'
-import {VoiceSearch} from './components/voicesearch.vue'
+// import {VoiceSearch} from './components/voicesearch.vue'
 // import Vue from 'vue'
 export default {
   name: 'App',
@@ -23,9 +23,9 @@ export default {
       result: ''
     }
   },
-  directives: {
-    VoiceSearch
-  },
+  // directives: {
+  //   VoiceSearch
+  // },
   components: {
     VoiceRecognition,
     HelloWorld

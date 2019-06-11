@@ -56,6 +56,7 @@ export default {
     if (!this.check) this.CheckAPIrecord()
     window.addEventListener('keyup', (e) => {
       if (e.keyCode === 13) {
+        console.log('enter')
         this.switcher()
       }
     })
