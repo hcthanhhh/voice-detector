@@ -8,25 +8,27 @@ let recognizing = false;
 let result = null;
 
 export const VoiceSearch = {
+    isFn: true, //important
     bind(el, bindings) {
         // let type = bindings.arg;
         let output = bindings.value;
-        console.log(bindings.modifiers)
-        console.log('el: ', el)
+        console.log('modifiers: ', bindings.modifiers)
+        
         if (bindings.modifiers['click'])
             el.addEventListener('click', () => {
                 console.log('click')
                 initVoiceSearch(output, el);
                 recognition.start();
             });
-            document.addEventListener('keyup', (e) => {
-                if (e.keyup === 13) {
-                    console.log('enter')
+        if (bindings.modifiers['keyup'])
+            window.addEventListener('keyup', (e) => {
+                if (e.keyCode === 13) {
+                    console.log(e)
                     initVoiceSearch(output, el);
                     recognition.start();
                 }
             })
-        console.log(output);
+        console.log('textarea: ', output);
     },
 }
 
@@ -37,7 +39,6 @@ function initVoiceSearch (output, el) {
     recognition.lang = 'vi-VN'
     console.log(recognition)
     console.log(recognition.lang);
-    console.log('el: ', el)
 
     //----------Recognition function----------
     recognition.onerror = (event) => {

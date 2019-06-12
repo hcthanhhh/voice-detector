@@ -3,10 +3,9 @@
     <HelloWorld/>
     <!-- <VoiceRecognition @clicked="onClickChild"/> -->
     <p>result: {{result}}</p>
-    <div id="voicesearch" v-voice-search.keyup.click="'searchtext'">
+    <div id="voicesearch">
       <textarea id="searchtext" cols="30" rows="10"></textarea>
-      <button>button</button>
-      <div v-voice-search:keyup></div>
+      <span v-voice-search.keyup.click="'searchtext'"><img src="https://img.icons8.com/material/24/000000/microphone.png" alt="" srcset=""></span>
     </div>
     <!-- <router-view/> -->
   </div>
