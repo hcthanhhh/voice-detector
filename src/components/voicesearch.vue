@@ -6,40 +6,38 @@ import { setTimeout, setInterval } from 'timers';
 var recognition = new window.webkitSpeechRecognition();
 let recognizing = false;
 let result = null;
-let check = false;
-let delayed = 0;
 
 export const VoiceSearch = {
-    bind(el, bindings, vnode, oldVnode) {
-        let self = vnode.context;
-        let vModelName = bindings.value;
-        console.log('inserted');
-        
-        // console.log(self);
-        // console.log(bindings);
-        if (!check) {
-            el.focus()
-            initVoiceSearch();
-            check = true;
-        }  
-        console.log(bindings.arg)
-        if (bindings.arg == 'record')
-            toggleStartStop()
-        el.addEventListener('keyup', (e) => {
-            if (e.keycode === 13) {
-                console.log('enter')
-                toggleStartStop()
-            }
-        })
-    }
+    bind(el, bindings) {
+        // let type = bindings.arg;
+        let output = bindings.value;
+        console.log(bindings.modifiers)
+        console.log('el: ', el)
+        if (bindings.modifiers['click'])
+            el.addEventListener('click', () => {
+                console.log('click')
+                initVoiceSearch(output, el);
+                recognition.start();
+            });
+            document.addEventListener('keyup', (e) => {
+                if (e.keyup === 13) {
+                    console.log('enter')
+                    initVoiceSearch(output, el);
+                    recognition.start();
+                }
+            })
+        console.log(output);
+    },
 }
-function initVoiceSearch () {
-    console.log(recognition);
+
+function initVoiceSearch (output, el) {
     //format recognition
-    recognition.continuous = true;
+    recognition.continuous = false;
     recognition.interimResults = true;
     recognition.lang = 'vi-VN'
+    console.log(recognition)
     console.log(recognition.lang);
+    console.log('el: ', el)
 
     //----------Recognition function----------
     recognition.onerror = (event) => {
@@ -50,7 +48,8 @@ function initVoiceSearch () {
     }
 
     recognition.onend = () => {
-        recognition = false
+        console.log('stop recognizing')
+        document.getElementById(output).textContent = result;
     }
 
     recognition.onresult = (event) => {
@@ -58,6 +57,8 @@ function initVoiceSearch () {
             if (event.results[i].isFinal) {
                 result = event.results[i][0].transcript;
                 console.log('result: ', result);
+            } else {
+                console.log(event.results[i][0].transcript);
             }
         }
     }
@@ -69,14 +70,8 @@ function toggleStartStop () {
         recognizing = false;
     } else {
         console.log('start recognizing')
-        initVoiceSearch()
         recognition.start();
         recognizing = true;
-        setTimeout(() => {
-            setInterval(() => {
-
-            }, delayed)
-        }, delayed)
     }
 }
 

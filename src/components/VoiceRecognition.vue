@@ -94,7 +94,7 @@ export default {
     },
     init: function () {
       console.log(this.recognition)
-      this.recognition.continuous = true
+      this.recognition.continuous = false
       this.recognition.interimResults = true
       console.log('language:', this.recognition.lang)
       // this.recognition.lang = 'vi-VN'

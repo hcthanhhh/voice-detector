@@ -3,8 +3,11 @@
     <HelloWorld/>
     <!-- <VoiceRecognition @clicked="onClickChild"/> -->
     <p>result: {{result}}</p>
-    <input v-voice-search/>
-    <button v-voice-search:record>Click</button>
+    <div id="voicesearch" v-voice-search.keyup.click="'searchtext'">
+      <textarea id="searchtext" cols="30" rows="10"></textarea>
+      <button>button</button>
+      <div v-voice-search:keyup></div>
+    </div>
     <!-- <router-view/> -->
   </div>
 </template>
