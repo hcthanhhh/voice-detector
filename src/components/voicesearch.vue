@@ -1,7 +1,6 @@
 <script>
 /*eslint-disable*/
 import Vue from 'vue'
-import { setTimeout, setInterval } from 'timers';
 
 var recognition = new window.webkitSpeechRecognition();
 let recognizing = false;
@@ -10,7 +9,6 @@ let result = null;
 export const VoiceSearch = {
     isFn: true, //important
     bind(el, bindings) {
-        // let type = bindings.arg;
         let output = bindings.value;
         console.log('modifiers: ', bindings.modifiers)
         
@@ -19,6 +17,7 @@ export const VoiceSearch = {
                 console.log('click')
                 initVoiceSearch(output, el);
                 recognition.start();
+                console.log('start recognizing');
             });
         if (bindings.modifiers['keyup'])
             window.addEventListener('keyup', (e) => {
@@ -26,19 +25,19 @@ export const VoiceSearch = {
                     console.log(e)
                     initVoiceSearch(output, el);
                     recognition.start();
+                    console.log('start recognizing');
                 }
             })
         console.log('textarea: ', output);
-    },
-}
+    }
+};
 
 function initVoiceSearch (output, el) {
     //format recognition
     recognition.continuous = false;
     recognition.interimResults = true;
-    recognition.lang = 'vi-VN'
-    console.log(recognition)
-    console.log(recognition.lang);
+    recognition.lang = 'vi-VN';
+    console.log(recognition);
 
     //----------Recognition function----------
     recognition.onerror = (event) => {
@@ -49,7 +48,7 @@ function initVoiceSearch (output, el) {
     }
 
     recognition.onend = () => {
-        console.log('stop recognizing')
+        console.log('stop recognizing');
         document.getElementById(output).textContent = result;
     }
 
@@ -63,7 +62,8 @@ function initVoiceSearch (output, el) {
             }
         }
     }
-}
+};
+
 function toggleStartStop () {
     if (recognizing) {
         console.log('stop recognizing');
@@ -74,7 +74,7 @@ function toggleStartStop () {
         recognition.start();
         recognizing = true;
     }
-}
+};
 
-Vue.directive('voice-search', VoiceSearch)
+Vue.directive('voice-search', VoiceSearch);
 </script>
