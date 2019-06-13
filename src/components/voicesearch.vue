@@ -17,6 +17,7 @@ export const VoiceSearch = {
                 console.log('click')
                 initVoiceSearch(output, el);
                 recognition.start();
+                recognizing = true;
                 console.log('start recognizing');
             });
         if (bindings.modifiers['keyup'])
@@ -25,11 +26,15 @@ export const VoiceSearch = {
                     console.log(e)
                     initVoiceSearch(output, el);
                     recognition.start();
+                    recognizing = true;
                     console.log('start recognizing');
                 }
             })
         console.log('textarea: ', output);
-    }
+    },
+    update() {
+        
+    },
 };
 
 function initVoiceSearch (output, el) {

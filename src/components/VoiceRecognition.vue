@@ -7,9 +7,9 @@
       <div class="modal-content">
         <span class="close" v-on:click="toggleStartStop()"><button><img src="https://img.icons8.com/material/24/000000/block_microphone.png" alt="" srcset=""></button></span>
         <textarea id="textarea" type="text" v-model = "result"></textarea>
-        <a id="downloadLink"></a>
       </div>
     </div>
+    <a id="downloadLink"></a>
   </div>
 </template>
 
@@ -52,8 +52,9 @@ export default {
   mounted () {
     // Speech Recognition
     this.getElement()
-    this.init()
-    if (!this.check) this.CheckAPIrecord()
+    // this.init()
+    // if (!this.check) this.CheckAPIrecord()
+    this.CheckAPIrecord()
     window.addEventListener('keyup', (e) => {
       if (e.keyCode === 13) {
         console.log('enter')
@@ -76,8 +77,8 @@ export default {
       this.modal = document.getElementById('search')
     },
     switcher: function () {
-      if (this.check) this.toggleStartStop()
-      else {
+      // if (this.check) this.toggleStartStop()
+      // else {
         if (this.isRecord) {
           this.isRecord = false
           // this.button.textContent = 'Click to Speak'
@@ -86,7 +87,7 @@ export default {
           this.isRecord = true
           // this.button.textContent = 'Click to Stop'
           this.onBtnRecordClicked()
-        }
+        // }
       }
     },
     reset: function () {
@@ -135,24 +136,26 @@ export default {
     },
     toggleStartStop: function (event) {
       if (this.recognizing) {
-        this.recognition.stop()
-        if (!this.check) this.onBtnStopClicked()
+        // this.recognition.stop()
+        // if (!this.check) this.onBtnStopClicked()
         // this.button.textContent = 'Click to Speak'
-        console.log('stop recognizing')
-        this.interimResult = ''
-        this.recognizing = false
+        // console.log('stop recognizing')
+        // this.interimResult = ''
+        // this.recognizing = false
         this.modal.style.display = 'none'
-        this.$emit('clicked', this.result)
-        console.log('check: ', this.recognizing)
+        // this.$emit('clicked', this.result)
+        // console.log('check: ', this.recognizing)
+        this.onBtnStopClicked()
       } else {
-        this.recognition.start()
-        if (!this.check) this.onBtnRecordClicked()
+        // this.recognition.start()
+        // if (!this.check) this.onBtnRecordClicked()
         this.modal.style.display = 'block'
         // this.textarea.focus()
         // this.button.textContent = 'Click to Stop'
-        console.log('start recognizing')
-        this.recognizing = true
-        console.log('check: ', this.recognizing)
+        // console.log('start recognizing')
+        // this.recognizing = true
+        // console.log('check: ', this.recognizing)
+        this.onBtnRecordClicked()
       }
     },
     CheckAPIrecord: function () {
