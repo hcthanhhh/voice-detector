@@ -6,31 +6,6 @@ var recognition = new window.webkitSpeechRecognition();
 let recognizing = false;
 let result = null;
 
-export const VoiceSearch = {
-  isFn: true, //important
-  bind(el, bindings) {
-    // let type = bindings.arg;
-    let output = bindings.value;
-    console.log("modifiers: ", bindings.modifiers);
-
-    if (bindings.modifiers["click"])
-      el.addEventListener("click", () => {
-        console.log("click");
-        initVoiceSearch(output, el);
-        recognition.start();
-      });
-    if (bindings.modifiers["keyup"])
-      window.addEventListener("keyup", e => {
-        if (e.keyCode === 13) {
-          console.log(e);
-          initVoiceSearch(output, el);
-          recognition.start();
-        }
-      });
-    console.log("textarea: ", output);
-  }
-};
-
 function initVoiceSearch(output, el) {
   //format recognition
   recognition.continuous = false;
@@ -65,7 +40,6 @@ function initVoiceSearch(output, el) {
 }
 function toggleStartStop() {
   if (recognizing) {
-    console.log("stop recognizing");
     recognition.stop();
     recognizing = false;
   } else {
@@ -74,6 +48,30 @@ function toggleStartStop() {
     recognizing = true;
   }
 }
+
+export const VoiceSearch = {
+  isFn: true, //important
+  bind(el, bindings) {
+    // let type = bindings.arg;
+    let output = bindings.value;
+    console.log("modifiers: ", bindings.modifiers);
+    initVoiceSearch(output, el);
+
+    if (bindings.modifiers["click"])
+      el.addEventListener("click", () => {
+        console.log("click");
+        toggleStartStop();
+      });
+    if (bindings.modifiers["keyup"])
+      window.addEventListener("keyup", e => {
+        if (e.keyCode === 13) {
+          console.log(e);
+          toggleStartStop();
+        }
+      });
+    console.log("textarea: ", output);
+  }
+};
 
 Vue.directive("voice-search", VoiceSearch);
 </script>
