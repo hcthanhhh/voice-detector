@@ -123,7 +123,7 @@ function onBtnRecordClicked(output) {
 }
 function onBtnStopClicked() {
   mediaRecorder.stop();
-}
+}  
 
 async function toggleStartStop(output) {
   if (isRecord) {
