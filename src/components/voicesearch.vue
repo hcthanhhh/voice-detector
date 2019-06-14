@@ -9,6 +9,7 @@ let result = null;
 export const VoiceSearch = {
   isFn: true, //important
   bind(el, bindings) {
+    // let type = bindings.arg;
     let output = bindings.value;
     console.log("modifiers: ", bindings.modifiers);
 
@@ -17,8 +18,6 @@ export const VoiceSearch = {
         console.log("click");
         initVoiceSearch(output, el);
         recognition.start();
-        recognizing = true;
-        console.log("start recognizing");
       });
     if (bindings.modifiers["keyup"])
       window.addEventListener("keyup", e => {
@@ -26,13 +25,10 @@ export const VoiceSearch = {
           console.log(e);
           initVoiceSearch(output, el);
           recognition.start();
-          recognizing = true;
-          console.log("start recognizing");
         }
       });
     console.log("textarea: ", output);
-  },
-  update() {}
+  }
 };
 
 function initVoiceSearch(output, el) {
@@ -41,15 +37,13 @@ function initVoiceSearch(output, el) {
   recognition.interimResults = true;
   recognition.lang = "vi-VN";
   console.log(recognition);
+  console.log(recognition.lang);
 
   //----------Recognition function----------
   recognition.onerror = event => {
     console.log(event);
     if (event.error === "no-speech") recognizing = false;
-    if (event.error === "language-not-supported"){
-      recognition.lang = "";
-      alert('this language is not supported');
-    }
+    if (event.error === "language-not-supported") recognition.lang = "";
     if (event.error === "not-allowed") alert("cannot use your microphone!");
   };
 
@@ -69,7 +63,6 @@ function initVoiceSearch(output, el) {
     }
   };
 }
-
 function toggleStartStop() {
   if (recognizing) {
     console.log("stop recognizing");

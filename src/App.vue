@@ -1,12 +1,12 @@
 <template>
   <div id="app">
     <HelloWorld/>
-    <VoiceRecognition @clicked="onClickChild"/>
-    <p>result: {{result}}</p>
-    <!-- <div id="voicesearch">
+    <!-- <VoiceRecognition @clicked="onClickChild"/>
+    <p>result: {{result}}</p> -->
+    <div id="voicesearch">
       <textarea id="searchtext" cols="30" rows="10"></textarea>
       <span v-voice-search.keyup.click="'searchtext'"><img src="https://img.icons8.com/material/24/000000/microphone.png" alt="" srcset=""></span>
-    </div> -->
+    </div>
     <!-- <div id="voicerecorder">
       <span v-voice-recorder.keyup.click="'downloadlink'"><img src="https://img.icons8.com/material/24/000000/microphone.png" alt="" srcset=""></span>
       <a id="downloadlink"></a>
