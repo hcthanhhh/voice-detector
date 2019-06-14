@@ -64,13 +64,13 @@ export default {
   mounted() {
     // Speech Recognition
     this.getElement();
-    // this.init()
+    this.init()
     // if (!this.check) this.CheckAPIrecord()
-    this.CheckAPIrecord();
+    // this.CheckAPIrecord();
     window.addEventListener("keyup", e => {
       if (e.keyCode === 13) {
         console.log("enter");
-        this.switcher();
+        this.toggleStartStop();
       }
     });
     window.onclick = function(event) {
@@ -106,11 +106,11 @@ export default {
       this.recognizing = false;
     },
     init: function() {
-      console.log(this.recognition);
       this.recognition.continuous = false;
       this.recognition.interimResults = true;
+      this.recognition.lang = 'vi-VN'
+      console.log(this.recognition);
       console.log("language:", this.recognition.lang);
-      // this.recognition.lang = 'vi-VN'
       // this.reset()
       this.recognition.onerror = event => {
         console.log(event);
@@ -129,7 +129,7 @@ export default {
       // this.recognition.onend = this.reset()
       this.recognition.onend = () => {
         this.recognizing = false;
-        this.result = "say something!";
+        // this.result = "say something!";
       };
       this.recognition.onresult = event => {
         for (var i = event.resultIndex; i < event.results.length; ++i) {
@@ -148,26 +148,26 @@ export default {
     },
     toggleStartStop: function(event) {
       if (this.recognizing) {
-        // this.recognition.stop()
-        // if (!this.check) this.onBtnStopClicked()
-        // this.button.textContent = 'Click to Speak'
-        // console.log('stop recognizing')
-        // this.interimResult = ''
-        // this.recognizing = false
+        this.recognition.stop()
+        if (!this.check) this.onBtnStopClicked()
+        this.button.textContent = 'Click to Speak'
+        console.log('stop recognizing')
+        this.interimResult = ''
+        this.recognizing = false
         this.modal.style.display = "none";
-        // this.$emit('clicked', this.result)
-        // console.log('check: ', this.recognizing)
-        this.onBtnStopClicked();
+        this.$emit('clicked', this.result)
+        console.log('check: ', this.recognizing)
+        // this.onBtnStopClicked();
       } else {
-        // this.recognition.start()
-        // if (!this.check) this.onBtnRecordClicked()
+        this.recognition.start()
+        if (!this.check) this.onBtnRecordClicked()
         this.modal.style.display = "block";
-        // this.textarea.focus()
-        // this.button.textContent = 'Click to Stop'
-        // console.log('start recognizing')
-        // this.recognizing = true
-        // console.log('check: ', this.recognizing)
-        this.onBtnRecordClicked();
+        this.textarea.focus()
+        this.button.textContent = 'Click to Stop'
+        console.log('start recognizing')
+        this.recognizing = true
+        console.log('check: ', this.recognizing)
+        // this.onBtnRecordClicked();
       }
     },
     CheckAPIrecord: function() {
