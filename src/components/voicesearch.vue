@@ -46,7 +46,10 @@ function initVoiceSearch(output, el) {
   recognition.onerror = event => {
     console.log(event);
     if (event.error === "no-speech") recognizing = false;
-    if (event.error === "language-not-supported") recognition.lang = "";
+    if (event.error === "language-not-supported"){
+      recognition.lang = "";
+      alert('this language is not supported')
+    }
     if (event.error === "not-allowed") alert("cannot use your microphone!");
   };
 
