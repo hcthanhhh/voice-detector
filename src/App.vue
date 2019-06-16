@@ -1,9 +1,22 @@
 <template>
   <div id="app">
     <HelloWorld/>
+<<<<<<< HEAD
     <VoiceRecognition @clicked="onClickChild"/>
     <p>result: {{result}}</p>
     <div v-voice-search></div>
+=======
+    <!-- <VoiceRecognition @clicked="onClickChild"/>
+    <p>result: {{result}}</p> -->
+    <div id="voicesearch">
+      <textarea id="searchtext" cols="30" rows="10"></textarea>
+      <span v-voice-search.keyup.click="'searchtext'"><img src="https://img.icons8.com/material/24/000000/microphone.png" alt="" srcset=""></span>
+    </div>
+    <!-- <div id="voicerecorder">
+      <span v-voice-recorder.keyup.click="'downloadlink'"><img src="https://img.icons8.com/material/24/000000/microphone.png" alt="" srcset=""></span>
+      <a id="downloadlink"></a>
+    </div> -->
+>>>>>>> f6bab577c0610536c10bd8a2dd55d57e243c0486
     <!-- <router-view/> -->
   </div>
 </template>
@@ -12,6 +25,7 @@
 import VoiceRecognition from './components/VoiceRecognition.vue'
 import HelloWorld from './components/HelloWorld.vue'
 import {VoiceSearch} from './components/voicesearch.vue'
+import {voicerecorder} from './components/VoiceRecorder.vue'
 // import Vue from 'vue'
 export default {
   name: 'App',
@@ -24,7 +38,8 @@ export default {
     }
   },
   directives: {
-    VoiceSearch
+    VoiceSearch,
+    voicerecorder
   },
   components: {
     VoiceRecognition,
@@ -38,7 +53,6 @@ export default {
     }
   }
 }
-// Vue.directives('voice-search', VoiceSearch);
 </script>
 
 <style>
