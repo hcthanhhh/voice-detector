@@ -18,7 +18,7 @@
 <script>
 import VoiceRecognition from './components/VoiceRecognition.vue'
 import HelloWorld from './components/HelloWorld.vue'
-import {VoiceSearch} from './components/voicesearch.vue'
+// import {VoiceSearch} from './components/voicesearch.vue'
 import {voicerecorder} from './components/VoiceRecorder.vue'
 // import Vue from 'vue'
 export default {
@@ -32,7 +32,7 @@ export default {
     }
   },
   directives: {
-    VoiceSearch,
+    // VoiceSearch,
     voicerecorder
   },
   components: {
