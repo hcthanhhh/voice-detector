@@ -1,11 +1,6 @@
 <template>
   <div id="app">
     <HelloWorld/>
-<<<<<<< HEAD
-    <VoiceRecognition @clicked="onClickChild"/>
-    <p>result: {{result}}</p>
-    <div v-voice-search></div>
-=======
     <!-- <VoiceRecognition @clicked="onClickChild"/>
     <p>result: {{result}}</p> -->
     <div id="voicesearch">
@@ -16,7 +11,6 @@
       <span v-voice-recorder.keyup.click="'downloadlink'"><img src="https://img.icons8.com/material/24/000000/microphone.png" alt="" srcset=""></span>
       <a id="downloadlink"></a>
     </div> -->
->>>>>>> f6bab577c0610536c10bd8a2dd55d57e243c0486
     <!-- <router-view/> -->
   </div>
 </template>
