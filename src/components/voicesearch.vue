@@ -8,7 +8,7 @@ let result = null;
 
 function initVoiceSearch(output, el) {
   //format recognition
-  recognition.continuous = false;
+  recognition.continuous = true;
   recognition.interimResults = true;
   recognition.lang = "vi-VN";
   console.log(recognition);
@@ -33,7 +33,7 @@ function initVoiceSearch(output, el) {
         result = event.results[i][0].transcript;
         console.log("result: ", result);
       } else {
-        console.log(event.results[i][0].transcript);
+        console.log("interimResult: ",event.results[i][0].transcript);
       }
     }
   };
