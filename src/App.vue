@@ -18,8 +18,8 @@
 <script>
 import VoiceRecognition from './components/VoiceRecognition.vue'
 import HelloWorld from './components/HelloWorld.vue'
-// import {VoiceSearch} from './components/voicesearch.vue'
-import {voicerecorder} from './components/VoiceRecorder.vue'
+import {VoiceSearch} from './components/voicesearch.vue'
+// import {voicerecorder} from './components/VoiceRecorder.vue'
 // import Vue from 'vue'
 export default {
   name: 'App',
@@ -32,8 +32,8 @@ export default {
     }
   },
   directives: {
-    // VoiceSearch,
-    voicerecorder
+    VoiceSearch,
+    // voicerecorder
   },
   components: {
     VoiceRecognition,
