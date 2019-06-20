@@ -33,6 +33,7 @@ function initVoiceSearch(output, el) {
         result = event.results[i][0].transcript;
         console.log("result: ", result);
       } else {
+        result = event.results[i][0].transcript;
         console.log("interimResult: ",event.results[i][0].transcript);
       }
     }
