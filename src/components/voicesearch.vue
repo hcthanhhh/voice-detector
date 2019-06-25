@@ -39,12 +39,24 @@ function initVoiceSearch (output, el) {
     console.log(recognition)
     console.log(recognition.lang);
 
+<<<<<<< HEAD
     //----------Recognition function----------
     recognition.onerror = (event) => {
         console.log(event);
         if (event.error === 'no-speech') recognizing = false;
         if (event.error === 'language-not-supported') recognition.lang = '';
         if (event.error === 'not-allowed') alert('cannot use your microphone!');
+=======
+  recognition.onresult = event => {
+    for (var i = event.resultIndex; i < event.results.length; ++i) {
+      if (event.results[i].isFinal) {
+        result = event.results[i][0].transcript;
+        console.log("result: ", result);
+      } else {
+        result = event.results[i][0].transcript;
+        console.log("interimResult: ",event.results[i][0].transcript);
+      }
+>>>>>>> 789d763bbde20207b57edc7174774d617a0f2f99
     }
 
     recognition.onend = () => {
