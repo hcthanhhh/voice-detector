@@ -1,6 +1,7 @@
 <script>
 /*eslint-disable*/
 import Vue from "vue";
+const axios = require("axios");
 
 var recognition = new window.webkitSpeechRecognition();
 let recognizing = false;
@@ -26,7 +27,6 @@ function initVoiceSearch(output, el) {
     console.log("stop recognizing");
     document.getElementById(output).textContent = result;
   };
-
   recognition.onresult = event => {
     for (var i = event.resultIndex; i < event.results.length; ++i) {
       if (event.results[i].isFinal) {
@@ -41,6 +41,18 @@ function initVoiceSearch(output, el) {
 function toggleStartStop() {
   if (recognizing) {
     recognition.stop();
+    axios({
+      method: "get",
+      url: `https://api.wit.ai/message`,
+      headers: { Authorization: "Bearer C5DK2PSBAIIRDAALILREKUJG2CKMK7ZA" },
+      params: {
+        v: 20190726,
+        q: result
+      }
+    }).then(response => {
+      res = response.data;
+      console.log(res);
+    });
     recognizing = false;
   } else {
     console.log("start recognizing");
