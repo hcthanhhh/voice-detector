@@ -35,12 +35,8 @@ export default {
     }
   },
   directives: {
-<<<<<<< HEAD
     VoiceSearch,
     // voicerecorder
-=======
-    VoiceSearch
->>>>>>> 5aa467cfd7366ebc0f629f76169a25eca0f966fb
   },
   components: {
     VoiceRecognition,
