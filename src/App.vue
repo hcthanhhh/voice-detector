@@ -19,10 +19,7 @@
 import VoiceRecognition from './components/VoiceRecognition.vue'
 import HelloWorld from './components/HelloWorld.vue'
 import {VoiceSearch} from './components/voicesearch.vue'
-<<<<<<< HEAD
 // import {voicerecorder} from './components/VoiceRecorder.vue'
-=======
->>>>>>> 5aa467cfd7366ebc0f629f76169a25eca0f966fb
 // import Vue from 'vue'
 export default {
   name: 'App',
